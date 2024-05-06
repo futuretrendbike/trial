@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicycle Sensor's Reading</title>
+    <style>
+        body {
+            background-color: #a0d8f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .white-box.left {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 1000px;
+            height: 450px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .white-box-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .white-box.bottom-left {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 1000px;
+            height: 170px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        #data-container {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 50px;
+            padding: 20px;
+            margin: 20px;
+            overflow: auto;
+        }
+
+        .white-box {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 50px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .box-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .video-label {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="white-box-container">
+        <div class="white-box left">
+            <div class="box-title">Video</div>
+            <iframe id="video-stream" width="1000" height="400" frameborder="0"></iframe>
+            <div class="video-label"></div>
+        </div>
+        <div class="white-box bottom-left">
+            <div class="box-title">9 Points Sensor</div>
+        </div>
+    </div>
+
+    <div class="white-box-container">
+        <div class="white-box" id="data-date">
+            <div class="box-title">Date</div>
+        </div>
+        <div class="white-box" id="data-accel">
+            <div class="box-title">Acceleration X</div>
+        </div>
+        <div class="white-box">
+            <div class="box-title">Speed</div>
+        </div>
+        <div class="white-box">
+            <div class="box-title">G-sensor</div>
+        </div>
+        <div class="white-box">
+            <div class="box-title">Position Coordinate</div>
+        </div>
+        <div class="white-box" id="data-pitch">
+            <div class="box-title">Tilt Level</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSG8x8bbPptSkst7INyoAoflhAuvjlGYUCdbi_U_T6Ulqscq7flhvU5ED7tGWjjwQwTPakzmI20P0xF/pub?output=csv')
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n').filter(Boolean);
+                    let currentIndex = 0;
+                    const dataContainerDate = document.querySelector('#data-date');
+
+
+                    function updateData() {
+                        const rowValues = rows[currentIndex].split(',');
+                        const timestamp = rowValues[0];
+
+
+                        const newDataDivDate = document.createElement('div');
+                        newDataDivDate.textContent = `Timestamp: ${timestamp}`;
+                        dataContainerDate.textContent = '';
+                        dataContainerDate.appendChild(newDataDivDate);
+
+
+
+                        currentIndex = (currentIndex + 1) % rows.length;
+                    }
+
+
+                    setInterval(updateData, 1000);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+
+        var videos = [];
+        var currentVideoIndex = 0;
+        var videoPlayer = document.getElementById('video-stream');
+        var videoLabel = document.querySelector('.video-label');
+
+        function playNextVideo() {
+            if (videos[currentVideoIndex]) {
+                var videoSrc = videos[currentVideoIndex].src;
+                var tempVideo = document.createElement('video');
+                var canPlay = tempVideo.canPlayType('video/mp4');
+
+                if (canPlay === 'probably' || canPlay === 'maybe') {
+                    videoPlayer.src = videoSrc;
+                    videoLabel.textContent = videos[currentVideoIndex].name;
+                    currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+                } else {
+                    videoPlayer.src = '';
+                    videoLabel.textContent = "Server is busy";
+                }
+            } else {
+                videoPlayer.src = '';
+                videoLabel.textContent = "Server is busy";
+            }
+        }
+
+        setInterval(playNextVideo, 20000);
+    </script>
+</body>
+
+</html>
