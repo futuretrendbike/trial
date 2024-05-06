@@ -86,7 +86,7 @@
         <div class="white-box" id="data-date">
             <div class="box-title">Date</div>
         </div>
-        <div class="white-box" id="data-accel">
+        <div class="white-box" id="data-accel-x">
             <div class="box-title">Acceleration X</div>
         </div>
         <div class="white-box">
@@ -111,19 +111,28 @@
                     const rows = data.split('\n').filter(Boolean);
                     let currentIndex = 0;
                     const dataContainerDate = document.querySelector('#data-date');
-
+                    const dataContainerAccelX = document.querySelector('#data-accel-x');
 
                     function updateData() {
                         const rowValues = rows[currentIndex].split(',');
                         const timestamp = rowValues[0];
-
+                        const accelX = rowValues[1];
+                        const pitch = rowValues[11];
 
                         const newDataDivDate = document.createElement('div');
                         newDataDivDate.textContent = `Timestamp: ${timestamp}`;
                         dataContainerDate.textContent = '';
                         dataContainerDate.appendChild(newDataDivDate);
 
+                        const newDataDivAccelX = document.createElement('div');
+                        newDataDivAccelX.textContent = `Acceleration X: ${accelX}`;
+                        dataContainerAccelX.textContent = '';
+                        dataContainerAccelX.appendChild(newDataDivAccelX);
 
+                        const newDataDivPitch = document.createElement('div');
+                        newDataDivPitch.textContent = `Pitch: ${pitch}`;
+                        dataContainerPitch.textContent = '';
+                        dataContainerPitch.appendChild(newDataDivPitch);
 
                         currentIndex = (currentIndex + 1) % rows.length;
                     }
