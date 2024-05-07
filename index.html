@@ -77,8 +77,8 @@
             <iframe id="video-stream" width="1000" height="400" frameborder="0"></iframe>
             <div class="video-label"></div>
         </div>
-        <div class="white-box bottom-left">
-            <div class="box-title">9 Points Sensor</div>
+        <div class="white-box bottom-left" id="data-gyro">
+            <div class="box-title">Gyro Points Sensor</div>
         </div>
     </div>
 
@@ -112,12 +112,19 @@
                     let currentIndex = 0;
                     const dataContainerDate = document.querySelector('#data-date');
                     const dataContainerAccelX = document.querySelector('#data-accel-x');
+                    const dataContainerGyroX = document.querySelector('#data-gyro-x');
+                    const dataContainerGyroY = document.querySelector('#data-gyro-y');
+                    const dataContainerGyroZ = document.querySelector('#data-gyro-z');
                     const dataContainerPitch = document.querySelector('#data-pitch');
+                    
                     
                     function updateData() {
                         const rowValues = rows[currentIndex].split(',');
                         const timestamp = rowValues[0];
                         const accelX = rowValues[1];
+                        const gyroX = rowValues[7];
+                        const gyroY = rowValues[8];
+                        const gyroZ = rowValues[9];
                         const pitch = rowValues[11];
 
                         const newDataDivDate = document.createElement('div');
@@ -129,6 +136,11 @@
                         newDataDivAccelX.textContent = `Acceleration X: ${accelX}`;
                         dataContainerAccelX.textContent = '';
                         dataContainerAccelX.appendChild(newDataDivAccelX);
+
+                        const newDataDiv = document.createElement('div');
+                        newDataDiv.textContent = `Gyro X: ${gyroX}, Gyro Y: ${gyroY}, Gyro Z: ${gyroZ}`;
+                        dataContainer.textContent = '';
+                        dataContainer.appendChild(newDataDiv);
 
                         const newDataDivPitch = document.createElement('div');
                         newDataDivPitch.textContent = `Pitch: ${pitch}`;
