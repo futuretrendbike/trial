@@ -112,11 +112,8 @@
                     let currentIndex = 0;
                     const dataContainerDate = document.querySelector('#data-date');
                     const dataContainerAccelX = document.querySelector('#data-accel-x');
-                    const dataContainerGyroX = document.querySelector('#data-gyro-x');
-                    const dataContainerGyroY = document.querySelector('#data-gyro-y');
-                    const dataContainerGyroZ = document.querySelector('#data-gyro-z');
+                    const dataContainerGyro = document.querySelector('#data-gyro');
                     const dataContainerPitch = document.querySelector('#data-pitch');
-                    
                     
                     function updateData() {
                         const rowValues = rows[currentIndex].split(',');
@@ -137,10 +134,10 @@
                         dataContainerAccelX.textContent = '';
                         dataContainerAccelX.appendChild(newDataDivAccelX);
 
-                        const newDataDiv = document.createElement('div');
-                        newDataDiv.textContent = `Gyro X: ${gyroX}, Gyro Y: ${gyroY}, Gyro Z: ${gyroZ}`;
-                        dataContainer.textContent = '';
-                        dataContainer.appendChild(newDataDiv);
+                        const newDataDivGyro = document.createElement('div');
+                        newDataDivGyro.textContent = `Gyro X: ${gyroX}, Gyro Y: ${gyroY}, Gyro Z: ${gyroZ}`;
+                        dataContainerGyro.textContent = '';
+                        dataContainerGyro.appendChild(newDataDivGyro);
 
                         const newDataDivPitch = document.createElement('div');
                         newDataDivPitch.textContent = `Pitch: ${pitch}`;
@@ -149,7 +146,6 @@
 
                         currentIndex = (currentIndex + 1) % rows.length;
                     }
-
 
                     setInterval(updateData, 1000);
                 })
