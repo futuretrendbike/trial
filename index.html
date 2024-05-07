@@ -112,16 +112,16 @@
                     let currentIndex = 0;
                     const dataContainerDate = document.querySelector('#data-date');
                     const dataContainerAccelX = document.querySelector('#data-accel-x');
-                    const dataContainerGyro = document.querySelector('#data-gyro');
+                    //const dataContainerGyro = document.querySelector('#data-gyro');
                     const dataContainerPitch = document.querySelector('#data-pitch');
                     
                     function updateData() {
                         const rowValues = rows[currentIndex].split(',');
                         const timestamp = rowValues[0];
                         const accelX = rowValues[1];
-                        const gyroX = rowValues[7];
-                        const gyroY = rowValues[8];
-                        const gyroZ = rowValues[9];
+                      //  const gyroX = rowValues[7];
+                      //  const gyroY = rowValues[8];
+                       // const gyroZ = rowValues[9];
                         const pitch = rowValues[11];
 
                         const newDataDivDate = document.createElement('div');
@@ -134,10 +134,10 @@
                         dataContainerAccelX.textContent = '';
                         dataContainerAccelX.appendChild(newDataDivAccelX);
 
-                        const newDataDivGyro = document.createElement('div');
-                        newDataDivGyro.textContent = `Gyro X: ${gyroX}, Gyro Y: ${gyroY}, Gyro Z: ${gyroZ}`;
-                        dataContainerGyro.textContent = '';
-                        dataContainerGyro.appendChild(newDataDivGyro);
+                      //  const newDataDivGyro = document.createElement('div');
+                      //  newDataDivGyro.textContent = `Gyro X: ${gyroX}, Gyro Y: ${gyroY}, Gyro Z: ${gyroZ}`;
+                      //  dataContainerGyro.textContent = '';
+                      //  dataContainerGyro.appendChild(newDataDivGyro);
 
                         const newDataDivPitch = document.createElement('div');
                         newDataDivPitch.textContent = `Pitch: ${pitch}`;
