@@ -118,7 +118,7 @@
                         const rowValues = rows[currentIndex].split(',');
                         const timestamp = rowValues[0];
                         const accelX = rowValues[1];
-                       // const pitch = rowValues[11];
+                        const pitch = rowValues[11];
 
                         const newDataDivDate = document.createElement('div');
                         newDataDivDate.textContent = `Timestamp: ${timestamp}`;
@@ -130,10 +130,10 @@
                         dataContainerAccelX.textContent = '';
                         dataContainerAccelX.appendChild(newDataDivAccelX);
 
-                       // const newDataDivPitch = document.createElement('div');
-                      //  newDataDivPitch.textContent = `Pitch: ${pitch}`;
-                       // dataContainerPitch.textContent = '';
-                      //  dataContainerPitch.appendChild(newDataDivPitch);
+                        const newDataDivPitch = document.createElement('div');
+                        newDataDivPitch.textContent = `Pitch: ${pitch}`;
+                        dataContainerPitch.textContent = '';
+                        dataContainerPitch.appendChild(newDataDivPitch);
 
                         currentIndex = (currentIndex + 1) % rows.length;
                     }
