@@ -120,9 +120,6 @@
                         const timestamp = rowValues[0];
                         const accelX = rowValues[1];
                         const pitch = rowValues[11];
-                        const gyroX = rowValues[7];
-                        const gyroY = rowValues[8];
-                        const gyroZ = rowValues[9];
 
                         const newDataDivDate = document.createElement('div');
                         newDataDivDate.textContent = `Timestamp: ${timestamp}`;
@@ -138,11 +135,6 @@
                         newDataDivPitch.textContent = `Pitch: ${pitch}`;
                         dataContainerPitch.textContent = '';
                         dataContainerPitch.appendChild(newDataDivPitch);
-
-                        const newDataDivGyro = document.createElement('div');
-                        newDataDivGryo.textContent = `Gyro X: ${gyroX}, Gyro Y: ${gyroY}, Gyro Z: ${gyroZ}`;
-                        dataContainerGyro.textContent = '';
-                        dataContainerGyro.appendChild(newDataDivGyro);
 
 
                         currentIndex = (currentIndex + 1) % rows.length;
