@@ -121,11 +121,7 @@
                         const accelX = rowValues[1];
                         const gyroX = rowValues.length > 7 ? rowValues[7] : 'N/A';
                         const pitch = rowValues[11];
-
-                        console.log('rowValues:', rowValues);
-                        console.log('gyroX:', gyroX);
-
-                        
+            
 
                         const newDataDivDate = document.createElement('div');
                         newDataDivDate.textContent = `Timestamp: ${timestamp}`;
