@@ -121,9 +121,9 @@
                         const accelX = rowValues[1];
                         const accelY = rowValues[2];    
                         const accelZ = rowValues[3]; 
-                        const magX = rowValues[4];
-                        const magY = rowValues[5];
-                        const magZ = rowValues[6];
+                        const magX = rowValues.length > 5 ? rowValues[4] : 'N/A';
+                        const magY = rowValues.length > 5 ? rowValues[5] : 'N/A';
+                        const magZ = rowValues.length > 6 ? rowValues[6] : 'N/A';
                         const gyroX = rowValues.length > 7 ? rowValues[7] : 'N/A';
                         const gyroY = rowValues.length > 8 ? rowValues[8] : 'N/A';
                         const gyroZ = rowValues.length > 9 ? rowValues[9] : 'N/A';
@@ -146,7 +146,7 @@
                         dataContainerPitch.appendChild(newDataDivPitch);
 
                         const newDataDivGyro = document.createElement('div');
-                        newDataDivGyro.textContent = ` ${gyroX},  ${gyroY},  ${gyroZ}`;
+                        newDataDivGyro.textContent = ` ${gyroX},  ${gyroY},  ${gyroZ}\n ${magX},${magY},${magZ}`;
                         dataContainerGyro.textContent = '';
                         dataContainerGyro.appendChild(newDataDivGyro);
 
