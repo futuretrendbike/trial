@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,158 +8,57 @@
         body {
             background-color: #a0d8f1;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
         }
 
-        .white-box {
+        .video-container {
+            width: 80%;
             background-color: white;
             border: 1px solid #ccc;
             padding: 20px;
-            margin: 20px;
-        }
-
-        .large-box {
-            width: 1000px;
-            height: 450px;
-        }
-
-        .medium-box {
-            width: 1000px;
-            height: 170px;
-        }
-
-        .small-box {
-            width: 300px;
-            height: 100px;
-        }
-
-        .box-title {
-            font-weight: bold;
-            margin-bottom: 10px;
+            text-align: center;
         }
 
         .video-label {
             margin-top: 10px;
         }
-
-        .white-box-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
     </style>
 </head>
-
 <body>
-    <div class="white-box-container">
-        <div class="white-box large-box">
-            <div class="box-title">Video</div>
-            <iframe id="video-stream" width="1000" height="400" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            <div class="video-label"></div>
-        </div>
-        <div class="white-box medium-box" id="data-gyro">
-            <div class="box-title">Gyro Points Sensor</div>
-        </div>
-    </div>
-
-    <div class="white-box-container">
-        <div class="white-box small-box" id="data-date">
-            <div class="box-title">Date</div>
-        </div>
-        <div class="white-box small-box" id="data-accel-x">
-            <div class="box-title">Acceleration X</div>
-        </div>
-        <div class="white-box small-box">
-            <div class="box-title">Speed</div>
-        </div>
-        <div class="white-box small-box">
-            <div class="box-title">G-sensor</div>
-        </div>
-        <div class="white-box small-box">
-            <div class="box-title">Position Coordinate</div>
-        </div>
-        <div class="white-box small-box" id="data-pitch">
-            <div class="box-title">Tilt Levels</div>
-        </div>
+    <div class="video-container">
+        <iframe id="video-stream" width="100%" height="400" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="video-label"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSG8x8bbPptSkst7INyoAoflhAuvjlGYUCdbi_U_T6Ulqscq7flhvU5ED7tGWjjwQwTPakzmI20P0xF/pub?output=csv')
-                .then(response => response.text())
-                .then(data => {
-                    const rows = data.split('\n').filter(Boolean);
-                    let currentIndex = 0;
-                    const dataContainerDate = document.querySelector('#data-date');
-                    const dataContainerAccelX = document.querySelector('#data-accel-x');
-                    const dataContainerPitch = document.querySelector('#data-pitch');
-                    const dataContainerGyro = document.querySelector('#data-gyro');
+        const folderId = '1YK0XU0bJ1ZT8vAqbGj_U9_8NNYTGY73p'; // Your Google Drive folder ID
+        const apiKey = 'AIzaSyDCEG2qUq5DahJLQB2p1RwbTTZF2d9SBpg'; // Your Google Drive API key
 
-                    function updateData() {
-                        const rowValues = rows[currentIndex].split(',');
-                        const [timestamp, accelX, accelY, accelZ, magX, magY, magZ, gyroX, gyroY, gyroZ, , pitch] = rowValues;
+        async function fetchVideoFiles() {
+            const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${apiKey}&fields=files(id,name,modifiedTime)`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.files;
+        }
 
-                        const newDataDivDate = document.createElement('div');
-                        newDataDivDate.textContent = `Timestamp: ${timestamp}`;
-                        dataContainerDate.textContent = '';
-                        dataContainerDate.appendChild(newDataDivDate);
+        async function updateVideo() {
+            const videoFiles = await fetchVideoFiles();
+            if (videoFiles && videoFiles.length > 0) {
+                const sortedFiles = videoFiles.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+                const latestFile = sortedFiles[0];
+                const videoPlayer = document.getElementById('video-stream');
+                const videoLabel = document.querySelector('.video-label');
 
-                        const newDataDivAccelX = document.createElement('div');
-                        newDataDivAccelX.textContent = `Acceleration X: ${accelX}`;
-                        dataContainerAccelX.textContent = '';
-                        dataContainerAccelX.appendChild(newDataDivAccelX);
-
-                        const newDataDivPitch = document.createElement('div');
-                        newDataDivPitch.textContent = `Pitch: ${pitch}`;
-                        dataContainerPitch.textContent = '';
-                        dataContainerPitch.appendChild(newDataDivPitch);
-
-                        const newDataDivGyro = document.createElement('div');
-                        newDataDivGyro.textContent = `Gyro: ${gyroX}, ${gyroY}, ${gyroZ}\nMag: ${magX}, ${magY}, ${magZ}`;
-                        dataContainerGyro.textContent = '';
-                        dataContainerGyro.appendChild(newDataDivGyro);
-
-                        currentIndex = (currentIndex + 1) % rows.length;
-                    }
-
-                    setInterval(updateData, 1000);
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        });
-
-        const videos = [
-            { src: "https://www.youtube.com/embed/VIDEO_ID_1?autoplay=1", name: "Name: Video 1" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_2?autoplay=1", name: "Name: Video 2" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_3?autoplay=1", name: "Name: Video 3" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_4?autoplay=1", name: "Name: Video 4" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_5?autoplay=1", name: "Name: Video 5" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_6?autoplay=1", name: "Name: Video 6" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_7?autoplay=1", name: "Name: Video 7" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_8?autoplay=1", name: "Name: Video 8" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_9?autoplay=1", name: "Name: Video 9" },
-            { src: "https://www.youtube.com/embed/VIDEO_ID_10?autoplay=1", name: "Name: Video 10" },
-        ];
-
-        let currentVideoIndex = 0;
-        const videoPlayer = document.getElementById('video-stream');
-        const videoLabel = document.querySelector('.video-label');
-
-        function playNextVideo() {
-            if (videos[currentVideoIndex]) {
-                videoPlayer.src = videos[currentVideoIndex].src;
-                videoLabel.textContent = videos[currentVideoIndex].name;
-                currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-            } else {
-                videoPlayer.src = '';
-                videoLabel.textContent = "No video available";
+                videoPlayer.src = `https://drive.google.com/file/d/${latestFile.id}/preview?autoplay=1&mute=1`;
+                videoLabel.textContent = latestFile.name;
             }
         }
 
-        setInterval(playNextVideo, 20000);
+        setInterval(updateVideo, 10000); // Update video every 10 seconds
+        updateVideo(); // Initial call to display the latest video
     </script>
 </body>
-
 </html>
