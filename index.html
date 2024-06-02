@@ -132,16 +132,16 @@
         });
 
         const videos = [
-            { src: "https://drive.google.com/file/d/1oqaRW1nWw2-jhqwJYPSo8r9ZOoZC1l7W/preview?autoplay=1", name: "Name: Video 1" },
-            { src: "https://drive.google.com/file/d/1BwDf42UAmIUxLMo--ud2mBpsNkOttFc6/preview?autoplay=1", name: "Name: Video 2" },
-            { src: "https://drive.google.com/file/d/1fUT1Q0nVGt4jRubusOJrucm4prXGnit0/preview?autoplay=1", name: "Name: Video 3" },
-            { src: "https://drive.google.com/file/d/1ZBJi9o68fz_KZCrvrS6ALZPdnSYfiMQz/preview?autoplay=1", name: "Name: Video 4" },
-            { src: "https://drive.google.com/file/d/1Dsoc2fnbD7-hG62cXV5wJn2qjMFFQPbg/preview?autoplay=1", name: "Name: Video 5" },
-            { src: "https://drive.google.com/file/d/1ZOOz0B3O5aoRoL2wCt7MhtL_ZC_jgN9O/preview?autoplay=1", name: "Name: Video 6" },
-            { src: "https://drive.google.com/file/d/1DoQstd0_VJH6879tnJE13OYY0as2ZWKB/preview?autoplay=1", name: "Name: Video 7" },
-            { src: "https://drive.google.com/file/d/1KpPhhsVl6_By_2gEn-ldRXZakMJxMvhD/preview?autoplay=1", name: "Name: Video 8" },
-            { src: "https://drive.google.com/file/d/1ZaXJxWNc8u__zSYkHBGlAYF6RGk02yov/preview?autoplay=1", name: "Name: Video 9" },
-            { src: "https://drive.google.com/file/d/1w6fh9MA2NBKMUeIvZVy9oI-EvAwuu7nw/preview?autoplay=1", name: "Name: Video 10" },
+            { src: "https://drive.google.com/file/d/1oqaRW1nWw2-jhqwJYPSo8r9ZOoZC1l7W/preview", name: "Name: Video 1" },
+            { src: "https://drive.google.com/file/d/1BwDf42UAmIUxLMo--ud2mBpsNkOttFc6/preview", name: "Name: Video 2" },
+            { src: "https://drive.google.com/file/d/1fUT1Q0nVGt4jRubusOJrucm4prXGnit0/preview", name: "Name: Video 3" },
+            { src: "https://drive.google.com/file/d/1ZBJi9o68fz_KZCrvrS6ALZPdnSYfiMQz/preview", name: "Name: Video 4" },
+            { src: "https://drive.google.com/file/d/1Dsoc2fnbD7-hG62cXV5wJn2qjMFFQPbg/preview", name: "Name: Video 5" },
+            { src: "https://drive.google.com/file/d/1ZOOz0B3O5aoRoL2wCt7MhtL_ZC_jgN9O/preview", name: "Name: Video 6" },
+            { src: "https://drive.google.com/file/d/1DoQstd0_VJH6879tnJE13OYY0as2ZWKB/preview", name: "Name: Video 7" },
+            { src: "https://drive.google.com/file/d/1KpPhhsVl6_By_2gEn-ldRXZakMJxMvhD/preview", name: "Name: Video 8" },
+            { src: "https://drive.google.com/file/d/1ZaXJxWNc8u__zSYkHBGlAYF6RGk02yov/preview", name: "Name: Video 9" },
+            { src: "https://drive.google.com/file/d/1w6fh9MA2NBKMUeIvZVy9oI-EvAwuu7nw/preview", name: "Name: Video 10" },
         ];
 
         let currentVideoIndex = 0;
@@ -150,7 +150,7 @@
 
         function playNextVideo() {
             if (videos[currentVideoIndex]) {
-                videoPlayer.src = videos[currentVideoIndex].src;
+                videoPlayer.src = videos[currentVideoIndex].src + "?autoplay=1";
                 videoLabel.textContent = videos[currentVideoIndex].name;
                 currentVideoIndex = (currentVideoIndex + 1) % videos.length;
             } else {
