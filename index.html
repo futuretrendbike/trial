@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bicycle Sensor's Reading</title>
     <style>
@@ -16,47 +15,26 @@
             margin: 0;
         }
 
-        .white-box.left {
-            background-color: white;
-            border: 1px solid #ccc;
-            width: 1000px;
-            height: 450px;
-            padding: 20px;
-            margin: 20px;
-        }
-
-        .white-box-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .white-box.bottom-left {
-            background-color: white;
-            border: 1px solid #ccc;
-            width: 1000px;
-            height: 170px;
-            padding: 20px;
-            margin: 20px;
-        }
-
-        #data-container {
-            background-color: white;
-            border: 1px solid #ccc;
-            width: 300px;
-            height: 50px;
-            padding: 20px;
-            margin: 20px;
-            overflow: auto;
-        }
-
         .white-box {
             background-color: white;
             border: 1px solid #ccc;
-            width: 300px;
-            height: 50px;
             padding: 20px;
             margin: 20px;
+        }
+
+        .large-box {
+            width: 1000px;
+            height: 450px;
+        }
+
+        .medium-box {
+            width: 1000px;
+            height: 170px;
+        }
+
+        .small-box {
+            width: 300px;
+            height: 100px;
         }
 
         .box-title {
@@ -67,38 +45,44 @@
         .video-label {
             margin-top: 10px;
         }
+
+        .white-box-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
     </style>
 </head>
 
 <body>
     <div class="white-box-container">
-        <div class="white-box left">
+        <div class="white-box large-box">
             <div class="box-title">Video</div>
             <iframe id="video-stream" width="1000" height="400" frameborder="0"></iframe>
             <div class="video-label"></div>
         </div>
-        <div class="white-box bottom-left" id="data-gyro">
+        <div class="white-box medium-box" id="data-gyro">
             <div class="box-title">Gyro Points Sensor</div>
         </div>
     </div>
 
     <div class="white-box-container">
-        <div class="white-box" id="data-date">
+        <div class="white-box small-box" id="data-date">
             <div class="box-title">Date</div>
         </div>
-        <div class="white-box" id="data-accel-x">
+        <div class="white-box small-box" id="data-accel-x">
             <div class="box-title">Acceleration X</div>
         </div>
-        <div class="white-box">
+        <div class="white-box small-box">
             <div class="box-title">Speed</div>
         </div>
-        <div class="white-box">
+        <div class="white-box small-box">
             <div class="box-title">G-sensor</div>
         </div>
-        <div class="white-box">
+        <div class="white-box small-box">
             <div class="box-title">Position Coordinate</div>
         </div>
-        <div class="white-box" id="data-pitch">
+        <div class="white-box small-box" id="data-pitch">
             <div class="box-title">Tilt Levels</div>
         </div>
     </div>
@@ -114,21 +98,10 @@
                     const dataContainerAccelX = document.querySelector('#data-accel-x');
                     const dataContainerPitch = document.querySelector('#data-pitch');
                     const dataContainerGyro = document.querySelector('#data-gyro');
-                    
+
                     function updateData() {
                         const rowValues = rows[currentIndex].split(',');
-                        const timestamp = rowValues[0];
-                        const accelX = rowValues[1];
-                        const accelY = rowValues[2];    
-                        const accelZ = rowValues[3]; 
-                        const magX = rowValues.length > 5 ? rowValues[4] : 'N/A';
-                        const magY = rowValues.length > 5 ? rowValues[5] : 'N/A';
-                        const magZ = rowValues.length > 6 ? rowValues[6] : 'N/A';
-                        const gyroX = rowValues.length > 7 ? rowValues[7] : 'N/A';
-                        const gyroY = rowValues.length > 8 ? rowValues[8] : 'N/A';
-                        const gyroZ = rowValues.length > 9 ? rowValues[9] : 'N/A';
-                        const pitch = rowValues[11];
-            
+                        const [timestamp, accelX, accelY, accelZ, magX, magY, magZ, gyroX, gyroY, gyroZ, , pitch] = rowValues;
 
                         const newDataDivDate = document.createElement('div');
                         newDataDivDate.textContent = `Timestamp: ${timestamp}`;
@@ -146,7 +119,7 @@
                         dataContainerPitch.appendChild(newDataDivPitch);
 
                         const newDataDivGyro = document.createElement('div');
-                        newDataDivGyro.textContent = ` ${gyroX},  ${gyroY},  ${gyroZ}\n ${magX}\n${magY}\n${magZ}`;
+                        newDataDivGyro.textContent = `Gyro: ${gyroX}, ${gyroY}, ${gyroZ}\nMag: ${magX}, ${magY}, ${magZ}`;
                         dataContainerGyro.textContent = '';
                         dataContainerGyro.appendChild(newDataDivGyro);
 
@@ -158,28 +131,31 @@
                 .catch(error => console.error('Error fetching data:', error));
         });
 
-        var videos = [];
-        var currentVideoIndex = 0;
-        var videoPlayer = document.getElementById('video-stream');
-        var videoLabel = document.querySelector('.video-label');
+        const videos = [
+            { src: "https://drive.google.com/file/d/1oqaRW1nWw2-jhqwJYPSo8r9ZOoZC1l7W/preview", name: "Name: Video 1" },
+            { src: "https://drive.google.com/file/d/1BwDf42UAmIUxLMo--ud2mBpsNkOttFc6/preview", name: "Name: Video 2" },
+            { src: "https://drive.google.com/file/d/1fUT1Q0nVGt4jRubusOJrucm4prXGnit0/preview", name: "Name: Video 3" },
+            { src: "https://drive.google.com/file/d/1ZBJi9o68fz_KZCrvrS6ALZPdnSYfiMQz/preview", name: "Name: Video 4" },
+            { src: "https://drive.google.com/file/d/1Dsoc2fnbD7-hG62cXV5wJn2qjMFFQPbg/preview", name: "Name: Video 5" },
+            { src: "https://drive.google.com/file/d/1ZOOz0B3O5aoRoL2wCt7MhtL_ZC_jgN9O/preview", name: "Name: Video 6" },
+            { src: "https://drive.google.com/file/d/1DoQstd0_VJH6879tnJE13OYY0as2ZWKB/preview", name: "Name: Video 7" },
+            { src: "https://drive.google.com/file/d/1KpPhhsVl6_By_2gEn-ldRXZakMJxMvhD/preview", name: "Name: Video 8" },
+            { src: "https://drive.google.com/file/d/1ZaXJxWNc8u__zSYkHBGlAYF6RGk02yov/preview", name: "Name: Video 9" },
+            { src: "https://drive.google.com/file/d/1w6fh9MA2NBKMUeIvZVy9oI-EvAwuu7nw/preview", name: "Name: Video 10" },
+        ];
+
+        let currentVideoIndex = 0;
+        const videoPlayer = document.getElementById('video-stream');
+        const videoLabel = document.querySelector('.video-label');
 
         function playNextVideo() {
             if (videos[currentVideoIndex]) {
-                var videoSrc = videos[currentVideoIndex].src;
-                var tempVideo = document.createElement('video');
-                var canPlay = tempVideo.canPlayType('video/mp4');
-
-                if (canPlay === 'probably' || canPlay === 'maybe') {
-                    videoPlayer.src = videoSrc;
-                    videoLabel.textContent = videos[currentVideoIndex].name;
-                    currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-                } else {
-                    videoPlayer.src = '';
-                    videoLabel.textContent = "Server is busy";
-                }
+                videoPlayer.src = videos[currentVideoIndex].src;
+                videoLabel.textContent = videos[currentVideoIndex].name;
+                currentVideoIndex = (currentVideoIndex + 1) % videos.length;
             } else {
                 videoPlayer.src = '';
-                videoLabel.textContent = "Server is busy";
+                videoLabel.textContent = "No video available";
             }
         }
 
