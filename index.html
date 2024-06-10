@@ -3,62 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bicycle Sensor's Reading</title>
+    <title>YouTube Video Player</title>
     <style>
         body {
-            background-color: #a0d8f1;
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
-
         .video-container {
             width: 80%;
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-            text-align: center;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 20px;
         }
-
-        .video-label {
-            margin-top: 10px;
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <iframe id="video-stream" width="100%" height="400" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <div class="video-label"></div>
-    </div>
 
-    <script>
-        const folderId = '1YK0XU0bJ1ZT8vAqbGj_U9_8NNYTGY73p'; // Your Google Drive folder ID
-        const apiKey = 'AIzaSyDCEG2qUq5DahJLQB2p1RwbTTZF2d9SBpg'; // Your Google Drive API key
+<div class="video-container">
+    <iframe id="videoPlayer" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
-        async function fetchVideoFiles() {
-            const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${apiKey}&fields=files(id,name,modifiedTime)`;
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.files;
+<script>
+    var videos = [
+        "4op4AxqXIDE",
+        "CkKYjf2U94Q",
+        "x9vp511M8SE",
+        "m6_ScRGgHsM",
+        "bZE_YvHz8Fs",
+        "dHWRLE0KtrY"
+    ];
+
+    var currentIndex = 0;
+    var player = document.getElementById('videoPlayer');
+
+    function playNextVideo() {
+        if (currentIndex >= videos.length) {
+            currentIndex = 0;
         }
+        var videoId = videos[currentIndex];
+        player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        currentIndex++;
+        // Set the duration for each video, for example, 10 seconds.
+        setTimeout(playNextVideo, 10000); // Adjust the time as needed
+    }
 
-        async function updateVideo() {
-            const videoFiles = await fetchVideoFiles();
-            if (videoFiles && videoFiles.length > 0) {
-                const sortedFiles = videoFiles.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
-                const latestFile = sortedFiles[0];
-                const videoPlayer = document.getElementById('video-stream');
-                const videoLabel = document.querySelector('.video-label');
+    // Start playing the first video
+    playNextVideo();
+</script>
 
-                videoPlayer.src = `https://drive.google.com/file/d/${latestFile.id}/preview?autoplay=1&mute=1`;
-                videoLabel.textContent = latestFile.name;
-            }
-        }
-
-        setInterval(updateVideo, 10000); // Update video every 10 seconds
-        updateVideo(); // Initial call to display the latest video
-    </script>
 </body>
 </html>
